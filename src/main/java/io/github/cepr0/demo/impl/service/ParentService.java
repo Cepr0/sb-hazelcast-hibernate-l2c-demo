@@ -1,7 +1,7 @@
 package io.github.cepr0.demo.impl.service;
 
 import io.github.cepr0.demo.base.service.AbstractBaseService;
-import io.github.cepr0.demo.impl.dto.child.ChildResponse;
+import io.github.cepr0.demo.impl.dto.child.ChildDto;
 import io.github.cepr0.demo.impl.dto.parent.*;
 import io.github.cepr0.demo.impl.mapper.ChildMapper;
 import io.github.cepr0.demo.impl.mapper.ParentMapper;
@@ -31,8 +31,8 @@ public class ParentService extends AbstractBaseService<Parent, ParentCreateReque
 		this.childMapper = childMapper;
 	}
 
-	public List<ChildResponse> getChildren(Integer id) {
-		return childRepo.findChildrenByParentId(id).stream().map(childMapper::toResponse).collect(toList());
+	public List<ChildDto> getChildren(Integer id) {
+		return childRepo.findChildrenByParentId(id).stream().map(childMapper::toChildDto).collect(toList());
 	}
 
 	@CacheEvict(value = "childrenNumber", key = "#id")

@@ -4,7 +4,7 @@ import io.github.cepr0.demo.base.service.AbstractBaseService;
 import io.github.cepr0.demo.impl.dto.child.ChildCreateRequest;
 import io.github.cepr0.demo.impl.dto.child.ChildResponse;
 import io.github.cepr0.demo.impl.dto.child.ChildUpdateRequest;
-import io.github.cepr0.demo.impl.dto.parent.ParentResponse;
+import io.github.cepr0.demo.impl.dto.parent.ParentDto;
 import io.github.cepr0.demo.impl.mapper.ChildMapper;
 import io.github.cepr0.demo.impl.mapper.ParentMapper;
 import io.github.cepr0.demo.impl.model.Child;
@@ -29,12 +29,12 @@ public class ChildService extends AbstractBaseService<Child, ChildCreateRequest,
 		this.parentMapper = parentMapper;
 	}
 
-	public List<ParentResponse> getParents(Integer id) {
-		return parentRepo.findParentsByChildId(id).stream().map(parentMapper::toResponse).collect(Collectors.toList());
+	public List<ParentDto> getParents(Integer id) {
+		return parentRepo.findParentsByChildId(id).stream().map(parentMapper::toParentDto).collect(Collectors.toList());
 	}
 
-	public List<ParentResponse> searchParents(Integer id) {
-		return parentRepo.searchParentsByChildId(id).stream().map(parentMapper::toResponse).collect(Collectors.toList());
+	public List<ParentDto> searchParents(Integer id) {
+		return parentRepo.searchParentsByChildId(id).stream().map(parentMapper::toParentDto).collect(Collectors.toList());
 	}
 
 }

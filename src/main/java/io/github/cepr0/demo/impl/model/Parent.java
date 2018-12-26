@@ -6,8 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +24,8 @@ import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE;
 @NoArgsConstructor
 @Entity
 @Table(name = "parents")
+@DynamicInsert
+@DynamicUpdate
 @Cache(usage = READ_WRITE)
 public class Parent extends BaseEntity {
 
@@ -26,12 +33,8 @@ public class Parent extends BaseEntity {
 	private String name;
 
 	@Cache(usage = READ_WRITE)
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	@JoinTable(
-			name = "parents_children",
-			joinColumns = @JoinColumn(name = "parent_id"),
-			inverseJoinColumns = @JoinColumn(name = "child_id")
-	)
+	@ManyToMany(mappedBy = "parents")
+
 	@BatchSize(size = 20)
 	private Set<Child> children;
 

@@ -17,4 +17,5 @@ public abstract class ParentMapper implements BaseMapper<Parent, ParentCreateReq
 	@Autowired @Getter private ParentRepo repo;
 
 	public abstract ChildrenNumberDto toChildrenNumberDto(ChildrenNumberProjection projection);
+	public abstract ParentDto toParentDto(Parent parent);
 }
