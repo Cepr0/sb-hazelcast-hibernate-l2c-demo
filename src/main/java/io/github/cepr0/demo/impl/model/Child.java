@@ -1,6 +1,7 @@
 package io.github.cepr0.demo.impl.model;
 
 import io.github.cepr0.demo.base.BaseEntity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import static org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
 @Table(name = "children")
 @DynamicInsert

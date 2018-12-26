@@ -40,13 +40,13 @@ public abstract class BaseEntity implements Serializable, Persistable<Integer> {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (!(o instanceof BaseEntity)) return false;
 		BaseEntity that = (BaseEntity) o;
 		return Objects.equals(id, that.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return 31;
+		return Objects.hashCode(id);
 	}
 }
