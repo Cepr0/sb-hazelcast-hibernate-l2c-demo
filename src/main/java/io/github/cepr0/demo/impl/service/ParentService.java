@@ -8,6 +8,7 @@ import io.github.cepr0.demo.impl.mapper.ParentMapper;
 import io.github.cepr0.demo.impl.model.Parent;
 import io.github.cepr0.demo.impl.repo.ChildRepo;
 import io.github.cepr0.demo.impl.repo.ParentRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class ParentService extends AbstractBaseService<Parent, ParentCreateRequest, ParentUpdateRequest, ParentResponse> {
@@ -31,15 +33,23 @@ public class ParentService extends AbstractBaseService<Parent, ParentCreateReque
 		this.childMapper = childMapper;
 	}
 
-	public List<ChildDto> getChildren(Integer id) {
-		return childRepo.findChildrenByParentId(id).stream().map(childMapper::toChildDto).collect(toList());
-	}
-
-	@CacheEvict(value = "childrenNumber", key = "#id")
 	@Transactional
 	@Override
 	public Optional<ParentResponse> update(Integer id, ParentUpdateRequest request) {
 		return super.update(id, request);
+	}
+
+	@CacheEvict(value = "childrenNumber", key = "#id")
+	@Override
+	public void delete(Integer id) {
+		super.delete(id);
+	}
+
+	public List<ChildDto> getChildren(Integer id) {
+		return childRepo.findChildrenByParentId(id)
+				.stream()
+				.map(childMapper::toChildDto)
+				.collect(toList());
 	}
 
 	@Cacheable("childrenNumber")

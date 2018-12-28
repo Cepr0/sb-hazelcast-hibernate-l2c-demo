@@ -1,0 +1,62 @@
+version: '2.4'
+services:
+  demo-service-1:
+    container_name: hzc-demo-service-1
+    domainname: demo-service-1
+    build: .
+    ports:
+      - "8081:8080"
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/hazelcast_demo
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDLAUTO=validate
+      - SPRING_PROFILES_ACTIVE=demo
+      - SPRING_FLYWAY_ENABLED=true
+      - HZC_MANAGEMENT_CENTER_URL=http://hazelcast-mgmt:8080/hazelcast-mancenter
+    depends_on:
+      - hazelcast-mgmt
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/hzc-demo-service/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  demo-service-2:
+    container_name: hzc-demo-service-2
+    domainname: demo-service-2
+    build: .
+    ports:
+      - "8082:8080"
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/hazelcast_demo
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDLAUTO=validate
+      - SPRING_FLYWAY_ENABLED=false
+      - HZC_MANAGEMENT_CENTER_URL=http://hazelcast-mgmt:8080/hazelcast-mancenter
+    depends_on:
+      hazelcast-mgmt:
+        condition: service_started
+      postgres:
+        condition: service_started
+      demo-service-1:
+        condition: service_healthy
+
+  hazelcast-mgmt:
+    container_name: hzc-demo-mgmt
+    domainname: hazelcast-mgmt
+    image: hazelcast/management-center:latest
+    ports:
+      - "8080:8080"
+
+  postgres:
+    container_name: hzc-demo-postgres
+    domainname: postgres
+    build: ./postgres
+    ports:
+      - "5431:5432"
+
