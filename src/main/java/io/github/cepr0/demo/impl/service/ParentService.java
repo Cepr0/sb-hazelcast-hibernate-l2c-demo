@@ -35,26 +35,26 @@ public class ParentService extends AbstractBaseService<Parent, ParentCreateReque
 
 	@Transactional
 	@Override
-	public Optional<ParentResponse> update(Integer id, ParentUpdateRequest request) {
-		return super.update(id, request);
+	public Optional<ParentResponse> update(Integer parentId, ParentUpdateRequest request) {
+		return super.update(parentId, request);
 	}
 
-	@CacheEvict(value = "childrenNumber", key = "#id")
+	@CacheEvict(value = "Parent.childrenNumber", key = "#parentId")
 	@Override
-	public void delete(Integer id) {
-		super.delete(id);
+	public void delete(Integer parentId) {
+		super.delete(parentId);
 	}
 
-	public List<ChildDto> getChildren(Integer id) {
-		return childRepo.findChildrenByParentId(id)
+	public List<ChildDto> getChildren(Integer parentId) {
+		return childRepo.findChildrenByParentId(parentId)
 				.stream()
 				.map(childMapper::toChildDto)
 				.collect(toList());
 	}
 
-	@Cacheable("childrenNumber")
-	public ChildrenNumberDto getChildrenNumber(Integer id) {
-		ChildrenNumberProjection projection = ((ParentRepo) repo).getChildrenNumber(id);
+	@Cacheable("Parent.childrenNumber")
+	public ChildrenNumberDto getChildrenNumber(Integer parentId) {
+		ChildrenNumberProjection projection = ((ParentRepo) repo).getChildrenNumber(parentId);
 		return ((ParentMapper) mapper).toChildrenNumberDto(projection);
 	}
 }

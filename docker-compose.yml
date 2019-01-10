@@ -14,6 +14,8 @@ services:
       - SPRING_JPA_HIBERNATE_DDLAUTO=validate
       - SPRING_PROFILES_ACTIVE=demo
       - SPRING_FLYWAY_ENABLED=true
+      - HZC_INSTANCE=demo-service-1
+      - HZC_GROUP=demo
       - HZC_MANAGEMENT_CENTER_URL=http://hazelcast-mgmt:8080/hazelcast-mancenter
     depends_on:
       - hazelcast-mgmt
@@ -37,6 +39,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDLAUTO=validate
       - SPRING_FLYWAY_ENABLED=false
+      - HZC_INSTANCE=demo-service-2
+      - HZC_GROUP=demo
       - HZC_MANAGEMENT_CENTER_URL=http://hazelcast-mgmt:8080/hazelcast-mancenter
     depends_on:
       hazelcast-mgmt:

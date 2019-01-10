@@ -1,6 +1,3 @@
-hzc:
-  management-center-url: http://localhost:38080/hazelcast-mancenter
-
 management:
   endpoints:
     web:
@@ -31,6 +28,7 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
     properties:
       hibernate:
+        generate_statistics: true
         format_sql: true
         order_inserts: true
         order_updates: true
@@ -42,10 +40,12 @@ spring:
         cache:
           use_second_level_cache: true
           use_query_cache: true
+          use_minimal_puts: true
           hazelcast:
-            use_native_client: true
-#            native_client_address: localhost
-            native_client_group: ${spring.application.name}
+            instance_name: ${hzc.instance}
+            shutdown_on_session_factory_close: false
+#            use_native_client: true
+#            native_client_group: ${hzc.group}
           region:
             factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
 
@@ -63,6 +63,9 @@ logging:
         security: debug
         orm:
           jpa: debug
+      hibernate:
+        cache: debug
+    io.github.cepr0: debug
 
 log4jdbc:
   dump:
