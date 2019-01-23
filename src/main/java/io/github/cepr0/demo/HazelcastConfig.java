@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.hazelcast.repository.config.EnableHazelcastRepositories;
 
 @Slf4j
+@EnableHazelcastRepositories("io.github.cepr0.demo.hzc_data")
 @Configuration
 @EnableConfigurationProperties(HazelcastProperties.class)
 public class HazelcastConfig {
