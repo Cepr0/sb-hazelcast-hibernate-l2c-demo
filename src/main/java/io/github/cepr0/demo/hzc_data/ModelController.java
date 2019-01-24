@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 import static java.util.Optional.ofNullable;
@@ -48,8 +49,11 @@ public class ModelController {
 	}
 
 	@GetMapping()
-	public Iterable<Model> getAll(Sort sort) {
-		return modelRepo.findAll(sort);
+	public List<Model> getAll(
+			@RequestParam(value = "name", required = false, defaultValue = "") String name,
+			@RequestParam(value = "email", required = false, defaultValue = "") String email,
+			Sort sort
+	) {
+		return modelRepo.findAllByNameContainingAndEmailContaining(name, email);
 	}
-
 }

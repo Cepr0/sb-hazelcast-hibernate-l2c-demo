@@ -35,6 +35,10 @@ public class HazelcastConfig {
 					.setUrl(managementCenterUrl)
 					.setEnabled(true);
 		}
+
+		config.getMapConfig("model")
+				.setTimeToLiveSeconds(120);
+
 		return config;
 	}
 }
